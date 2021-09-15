@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>
+<body class="bg-dark">
+    <div th:replace="fragments/navbar :: navbar"></div>
+    <div id="app" class="container mt-5">
+<!--        <form th:action="@{/api/v1/anime/search}" method="get">-->
+            <div class="row d-flex justify-content-center">
+                <div class="col-12">
+                    <div class="row no-gutters">
+                        <div class="col-lg-11 col-md-9 col-sm-12 p-0">
+                            <input type="text"
+                                   class="form-control form-control-lg"
+                                   placeholder="Type your anime here"
+                                   v-model="query"
+                                   @keyup.enter="getSearchResult(query)">
+                        </div>
+                        <div class="col-lg-1 col-md-3 col-sm-12 p-0">
+                            <button class="btn btn-primary btn-lg" v-on:click="getSearchResult(query)">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--        </form>-->
+        <div class="row d-flex justify-content-center">
+            <ul class="list-group" v-for="result in searchResults">
+                <overview
+                    v-bind:title="result.title"
+                    v-bind:image_url="result.image_url">
+                </overview>
+            </ul>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#anime-info">
+        Klick mich
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="anime-info" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal Titel</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="false">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Das ist der Body von diesem <b>Modal</b></p><p>
+                </p></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                    <!-- <button type="button" class="btn btn-primary">Button</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $("#anime-info").modal();
+        });
+    </script>
+<!--    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>-->
+    <script type="text/javascript">
+        Vue.component('overview', {
+            props: ['title', 'image_url'],
+            template:
+                '<li class="list-group-item bg-light" >' +
+                '<div class="row">' +
+                '<div class="col-2">' +
+                '<img v-bind:src="image_url" class="img-thumbnail" height="200" alt="thumbnail">' +
+                '</div> ' +
+                '<div class="col-10 d-flex align-items-center">' +
+                '<a href="#animeinfo" class="h3 link-dark" data-bs-toggle="modal" data-bs-target="#animeinfo">{{title}}</a> ' +
+                '</div>' +
+                '</div>' +
+                '</li>'
+        });
+        var app = new Vue({
+            el: '#app',
+            data: {
+                serverUrl: "http://localhost:8080",
+                query: "",
+                searchResults: []
+            },
+            methods: {
+                getSearchResult: function(query) {
+                    let xmlHttp = new XMLHttpRequest();
+                    // xmlHttp.onreadystatechange = function() {
+                    //     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    //         this.searchResults = JSON.parse(xmlHttp.responseText);
+                    //         console.log(this.searchResults);
+                    //     }
+                    // }
+                    xmlHttp.open("GET", this.serverUrl + "/api/v1/anime/search?query=" + query, false); // true for asynchronous
+                    console.log("Sending search request...\n");
+                    xmlHttp.send();
+                    if(xmlHttp.status === 200) {
+                        this.searchResults = JSON.parse(xmlHttp.responseText);
+                        console.log(this.searchResults);
+                    } else {
+                        console.log("Error message: " + xmlHttp.responseText);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
