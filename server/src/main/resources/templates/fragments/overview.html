@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment="overview (title, image_url)">
+        <li class="list-group-item bg-light" >
+            <div class="row">
+                <div class="col-2">
+                    <a th:href="${image_url}">
+                    <img th:src="${image_url}" class="img-thumbnail" height="200" alt="thumbnail">
+                    </a>
+                    </div>
+                <div class="col-10 d-flex align-items-center">
+                    <a href="#animeinfo" class="h3 link-dark" data-bs-toggle="modal" th:text="${title}"></a>
+                    </div>
+                </div>
+        </li>
+    </div>
+</body>
+</html>
