@@ -20,4 +20,7 @@ public interface AnimeService {
     //search
     Anime getAnimeById(Long id) throws IOException;
     List<AnimeOverview> getSearchedOverviews(String query) throws IOException;
+    //check
+    Boolean isInFavourite(Long id);
+    Boolean isInWatchLater(Long id);
 }

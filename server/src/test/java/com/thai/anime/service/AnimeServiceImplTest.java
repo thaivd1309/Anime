@@ -36,7 +36,7 @@ class AnimeServiceImplTest {
         List<AnimeOverview> list = animeService.getSearchedOverviews("fate");
         Iterator<AnimeOverview> iterator = list.iterator();
         AnimeOverview overview = (AnimeOverview) iterator.next();
-        assertEquals(10087, overview.getMal_id());
+        assertEquals(10087, overview.getId());
     }
 
     @Test
@@ -47,7 +47,7 @@ class AnimeServiceImplTest {
         List<AnimeOverview> favourite = animeService.getAllFavourite(0);
         assert favourite.size() == 1;
         AnimeOverview actual = favourite.iterator().next();
-        assertEquals(expected.getMal_id(), actual.getMal_id());
+        assertEquals(expected.getId(), actual.getId());
     }
 
     @Test

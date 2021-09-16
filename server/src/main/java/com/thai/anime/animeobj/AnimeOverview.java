@@ -1,22 +1,22 @@
 package com.thai.anime.animeobj;
 
 public class AnimeOverview {
-    private Long mal_id;
+    private Long id;
     private String title;
     private String image_url;
 
-    public AnimeOverview(Long mal_id, String title, String image_url) {
-        this.mal_id = mal_id;
+    public AnimeOverview(Long id, String title, String image_url) {
+        this.id = id;
         this.title = title;
         this.image_url = image_url;
     }
 
-    public Long getMal_id() {
-        return mal_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setMal_id(Long mal_id) {
-        this.mal_id = mal_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {

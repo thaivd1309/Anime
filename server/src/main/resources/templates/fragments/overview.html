@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-    <div th:fragment="overview (title, image_url)">
+    <div th:fragment="overview (id, title, image_url)">
         <li class="list-group-item bg-light" >
             <div class="row">
                 <div class="col-2">
@@ -14,10 +14,20 @@
                     </a>
                     </div>
                 <div class="col-10 d-flex align-items-center">
-                    <a href="#animeinfo" class="h3 link-dark" data-bs-toggle="modal" th:text="${title}"></a>
+                    <a th:href="@{'/anime/' + ${id}}" class="h3 link-dark" th:text="${title}"></a>
                     </div>
                 </div>
         </li>
+    </div>
+    <div th:fragment="listOfOverviews(searchResults)">
+        <div th:if="${not #lists.isEmpty(searchResults)}">
+            <div class="row d-flex justify-content-center">
+                <ul class="list-group" th:each="result: ${searchResults}">
+                    <div th:replace="fragments/overview.html :: overview (${#strings.toString(result.id)}, ${result.title}, ${result.image_url})">
+                    </div>
+                </ul>
+            </div>
+        </div>
     </div>
 </body>
 </html>

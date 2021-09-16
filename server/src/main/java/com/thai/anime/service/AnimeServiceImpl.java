@@ -104,4 +104,16 @@ public class AnimeServiceImpl implements AnimeService {
 //        System.out.println(listOfOverviews.stream().map(AnimeOverview::getTitle).collect(Collectors.toList()));
         return listOfOverviews;
     }
+
+    @Override
+    public Boolean isInFavourite(Long id) {
+        Optional<Anime> exist = animeRepo.findBySaveToAndMal_id("FAVOURITE", id);
+        return exist.isPresent();
+    }
+
+    @Override
+    public Boolean isInWatchLater(Long id) {
+        Optional<Anime> exist = animeRepo.findBySaveToAndMal_id("WATCH LATER", id);
+        return exist.isPresent();
+    }
 }
