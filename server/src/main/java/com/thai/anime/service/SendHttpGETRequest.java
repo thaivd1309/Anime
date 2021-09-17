@@ -23,8 +23,8 @@ public class SendHttpGETRequest {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Content-Type", "application/json");
-        con.setConnectTimeout(2000);
-        con.setReadTimeout(2000);
+        con.setConnectTimeout(5000);
+        con.setReadTimeout(5000);
         int status = con.getResponseCode();
         BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;

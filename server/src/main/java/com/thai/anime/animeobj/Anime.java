@@ -16,9 +16,13 @@ public class Anime {
     private Long episodes;
     private String url;
     private String image_url;
+
+    @Transient
+    private String image_url_lg;
+
     private String status;
     private String premiered;
-    private String rated;
+    private String rating;
     private double score;
     private String saveTo;
 
@@ -49,7 +53,7 @@ public class Anime {
         this.image_url = image_url;
         this.status = status;
         this.premiered = premiered;
-        this.rated = rated;
+        this.rating = rated;
         this.score = score;
         this.studios = studios;
         this.genres = genres;
@@ -114,12 +118,12 @@ public class Anime {
         this.premiered = premiered;
     }
 
-    public String getRated() {
-        return rated;
+    public String getRating() {
+        return rating;
     }
 
-    public void setRated(String rated) {
-        this.rated = rated;
+    public void setRating(String rated) {
+        this.rating = rated;
     }
 
     public double getScore() {
@@ -164,5 +168,14 @@ public class Anime {
 
     public void setSaveTo(String saveTo) {
         this.saveTo = saveTo;
+    }
+
+    public String getImage_url_lg() {
+        image_url_lg = new StringBuilder(image_url).insert(image_url.length() - 4, "l").toString();
+        return image_url_lg;
+    }
+
+    public void setImage_url_lg(String image_url_lg) {
+        this.image_url_lg = image_url_lg;
     }
 }

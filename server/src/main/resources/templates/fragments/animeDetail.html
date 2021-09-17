@@ -6,24 +6,25 @@
     <title>Anime Detail</title>
 </head>
 <body>
-    <div th:fragment="deilailCard (anime, isInFavourite, isInWatchLater)">
+    <div th:fragment="deilailCard (anime, animeGenres, animeStudios)">
         <div class="card mb-3 mt-5">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img th:src="${anime.image_url}" class="img-fluid rounded-start" alt="Image">
+                    <img th:src="${anime.image_url_lg}" width="100%" class="img-fluid rounded-start" alt="Image">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
                         <h3 class="card-title" th:text="${anime.title}"></h3>
                         <h5 class="card-subtitle" th:text="'Score: ' + ${anime.score}"></h5>
                         <br>
+                        <p class="card-text" th:text="'Genres: ' + ${animeGenres}"></p>
                         <p class="card-text" th:text="'Premiered: ' + ${anime.premiered} ?: 'unknown'"></p>
                         <p class="card-text" th:text="'Episodes: ' + ${#strings.toString(anime.episodes)} ?: 'unknown'"></p>
                         <p class="card-text" th:text="'Status: ' + ${anime.status} ?: 'unknown'"></p>
                         <p class="card-text" th:text="'Rating: ' + ${anime.rating} ?: 'unknown'"></p>
-                        <a class="card-text" th:href="${anime.url}" th:text="'Link: ' + ${anime.url}"></a>
-                        <br>
-                        <p class="card-text" th:text="'Synopsis: ' + ${anime.synopsis} ?: 'unknown'"></p>
+                        <p class="card-text" th:text="'Studios: ' + ${animeStudios}"></p>
+                        <p class="card-text">Link: <a class="card-text" th:href="${anime.url}" th:text="${anime.url}"></a></p>
+                        <b class="card-text">Synopsis: </b> <p class="card-text" th:text="${anime.synopsis} ?: 'unknown'"></p>
                     </div>
                 </div>
             </div>
