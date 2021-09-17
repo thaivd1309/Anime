@@ -27,13 +27,13 @@ public class AnimeController {
     }
 
     @PostMapping("/favourite")
-    public void saveToFavourite(@RequestBody Anime anime) {
-        animeService.saveToFavourite(anime);
+    public void saveToFavourite(@RequestParam Long id) throws IOException {
+        animeService.saveToFavourite(id);
     }
 
     @PostMapping("/watchLater")
-    public void saveToWatchLater(Anime anime) {
-        animeService.saveToWatchLater(anime);
+    public void saveToWatchLater(@RequestParam Long id) throws IOException {
+        animeService.saveToWatchLater(id);
     }
 
     @GetMapping("/favourite")

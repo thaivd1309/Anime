@@ -8,8 +8,6 @@ import javax.persistence.*;
 public class Studios {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private Long mal_id;
     private String name;
 

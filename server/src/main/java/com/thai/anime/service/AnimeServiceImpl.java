@@ -5,42 +5,71 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.thai.anime.animeobj.Anime;
 import com.thai.anime.animeobj.AnimeOverview;
+import com.thai.anime.animeobj.Genre;
+import com.thai.anime.animeobj.Studios;
 import com.thai.anime.repo.AnimeRepo;
+import com.thai.anime.repo.GenreRepo;
+import com.thai.anime.repo.StudioRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class AnimeServiceImpl implements AnimeService {
     private final AnimeRepo animeRepo;
     private final SendHttpGETRequest sendHttpGETRequest;
+    private final GenreRepo genreRepo;
+    private final StudioRepo studioRepo;
     private final Gson gson = new Gson();
     String searchUrl = "https://api.jikan.moe/v3/search/anime";
     String animeUrl = "https://api.jikan.moe/v3/anime";
 
     @Autowired
-    public AnimeServiceImpl(AnimeRepo animeRepo, SendHttpGETRequest sendHttpGETRequest) {
+    public AnimeServiceImpl(AnimeRepo animeRepo, SendHttpGETRequest sendHttpGETRequest, GenreRepo genreRepo, StudioRepo studioRepo) {
         this.animeRepo = animeRepo;
         this.sendHttpGETRequest = sendHttpGETRequest;
+        this.genreRepo = genreRepo;
+        this.studioRepo = studioRepo;
     }
 
     @Override
-    public void saveToFavourite(Anime anime) {
-        Optional<Anime> exist = animeRepo.findBySaveToAndTitle("FAVOURITE", anime.getTitle());
+    public void saveToFavourite(Long mal_id) throws IOException {
+        Optional<Anime> exist = animeRepo.findBySaveToAndMal_id("FAVOURITE", mal_id);
         if (exist.isPresent()) {
             throw new IllegalStateException("Anime already in favourites.");
         }
+        Anime anime = refreshGenresAndStudios(getAnimeById(mal_id));
         anime.setSaveTo("FAVOURITE");
         animeRepo.save(anime);
+    }
+
+    @Override
+    public Anime refreshGenresAndStudios(Anime anime) {
+        Collection<Genre> genres = anime.getGenres();
+        Collection<Studios> studios = anime.getStudios();
+        anime.setGenres(new LinkedList<>());
+        anime.setStudios(new LinkedList<>());
+        for (Genre genre : genres) {
+            saveGenre(genre);
+            addGenre(anime, genre.getMal_id());
+        }
+        for (Studios studio : studios) {
+            saveStudio(studio);
+            addStudio(anime, studio.getMal_id());
+        }
+        return anime;
     }
 
     @Override
@@ -60,11 +89,12 @@ public class AnimeServiceImpl implements AnimeService {
     }
 
     @Override
-    public void saveToWatchLater(Anime anime) {
-        Optional<Anime> exist = animeRepo.findBySaveToAndTitle("WATCH LATER", anime.getTitle());
+    public void saveToWatchLater(Long mal_id) throws IOException {
+        Optional<Anime> exist = animeRepo.findBySaveToAndMal_id("WATCH LATER", mal_id);
         if (exist.isPresent()) {
             throw new IllegalStateException("Anime already in watch later.");
         }
+        Anime anime = refreshGenresAndStudios(getAnimeById(mal_id));
         anime.setSaveTo("WATCH LATER");
         animeRepo.save(anime);
     }
@@ -115,5 +145,35 @@ public class AnimeServiceImpl implements AnimeService {
     public Boolean isInWatchLater(Long id) {
         Optional<Anime> exist = animeRepo.findBySaveToAndMal_id("WATCH LATER", id);
         return exist.isPresent();
+    }
+
+    @Override
+    public void saveGenre(Genre genre) {
+        Optional<Genre> exist = genreRepo.findById(genre.getMal_id());
+        if (exist.isEmpty()) {
+            genreRepo.save(genre);
+        }
+    }
+
+    @Override
+    public void saveStudio(Studios studios) {
+        Optional<Studios> exist = studioRepo.findById(studios.getMal_id());
+        if (exist.isEmpty()) {
+            studioRepo.save(studios);
+        }
+    }
+
+    @Override
+    public void addGenre(Anime anime, Long genre_id) {
+        Optional<Genre> genre = genreRepo.findById(genre_id);
+        if (genre.isPresent())
+            anime.getGenres().add(genre.get());
+    }
+
+    @Override
+    public void addStudio(Anime anime, Long studio_id) {
+        Optional<Studios> studio = studioRepo.findById(studio_id);
+        if (studio.isPresent())
+            anime.getStudios().add(studio.get());
     }
 }

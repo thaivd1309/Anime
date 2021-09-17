@@ -50,28 +50,27 @@ public class MainController {
     }
 
     @PostMapping("/favourite")
-    public String saveToFavourite(@RequestBody Anime anime, RedirectAttributes redirectAttributes) {
-        System.out.println(anime);
+    public String saveToFavourite(@RequestParam Long id, RedirectAttributes redirectAttributes) {
         try {
-            animeService.saveToFavourite(anime);
-            redirectAttributes.addFlashAttribute("success", anime.getTitle() + " has been saved to Favourite.");
+            animeService.saveToFavourite(id);
+            redirectAttributes.addFlashAttribute("success","Anime has been saved to Favourite.");
         }
-        catch (IllegalStateException exception) {
+        catch (IllegalStateException | IOException exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
         }
-        return "redirect:/anime/" + anime.getMal_id().toString();
+        return "redirect:/anime/" + id;
     }
 
     @PostMapping("/watchlater")
-    public String saveToWatchLater(Anime anime, RedirectAttributes redirectAttributes) {
+    public String saveToWatchLater(@RequestParam Long id, RedirectAttributes redirectAttributes) {
         try {
-            animeService.saveToWatchLater(anime);
-            redirectAttributes.addFlashAttribute("success", anime.getTitle() + " has been saved to Favourite.");
+            animeService.saveToWatchLater(id);
+            redirectAttributes.addFlashAttribute("success","Anime has been saved to Watch Later.");
         }
-        catch (IllegalStateException exception) {
+        catch (IllegalStateException | IOException exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
         }
-        return "redirect:/anime/" + anime.getMal_id().toString();
+        return "redirect:/anime/" + id;
     }
 
 //    @GetMapping("/test")

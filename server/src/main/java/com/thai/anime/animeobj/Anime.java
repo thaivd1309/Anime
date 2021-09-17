@@ -1,7 +1,8 @@
 package com.thai.anime.animeobj;
 
+
 import javax.persistence.*;
-import java.util.List;
+import java.util.Collection;
 
 @Entity
 @Table
@@ -27,12 +28,14 @@ public class Anime {
     private String saveTo;
 
     @ManyToMany
-    private List<Studios> studios;
+    private Collection<Studios> studios;
 
     @ManyToMany
-    private List<Genre> genres;
+    private Collection<Genre> genres;
 
+    @Column(length = 2000)
     private String synopsis;
+
     public Anime(Long mal_id,
                   String title,
                   Long episodes,
@@ -42,8 +45,8 @@ public class Anime {
                   String premiered,
                   String rated,
                   double score,
-                  List<Studios> studios,
-                  List<Genre> genres,
+                  Collection<Studios> studios,
+                  Collection<Genre> genres,
                   String synopsis)
     {
         this.mal_id = mal_id;
@@ -134,19 +137,19 @@ public class Anime {
         this.score = score;
     }
 
-    public List<Studios> getStudios() {
+    public Collection<Studios> getStudios() {
         return studios;
     }
 
-    public void setStudios(List<Studios> studios) {
+    public void setStudios(Collection<Studios> studios) {
         this.studios = studios;
     }
 
-    public List<Genre> getGenres() {
+    public Collection<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(Collection<Genre> genres) {
         this.genres = genres;
     }
 

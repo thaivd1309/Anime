@@ -7,9 +7,6 @@ import javax.persistence.*;
 public class Genre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     private Long mal_id;
     private String name;
 

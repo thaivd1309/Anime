@@ -1,11 +1,11 @@
 package com.thai.anime.service;
 
-import com.thai.anime.animeobj.Anime;
 import com.thai.anime.animeobj.AnimeOverview;
 import com.thai.anime.repo.AnimeRepo;
+import com.thai.anime.repo.GenreRepo;
+import com.thai.anime.repo.StudioRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -22,13 +22,17 @@ class AnimeServiceImplTest {
 
     @Autowired
     AnimeRepo animeRepo;
+    @Autowired
+    GenreRepo genreRepo;
+    @Autowired
+    StudioRepo studioRepo;
 
     SendHttpGETRequest sendHttpGETRequest;
 
     @BeforeEach
     void init() {
         sendHttpGETRequest = new SendHttpGETRequest();
-        animeService = new AnimeServiceImpl(animeRepo, sendHttpGETRequest);
+        animeService = new AnimeServiceImpl(animeRepo, sendHttpGETRequest, genreRepo, studioRepo);
     }
 
     @Test
@@ -40,10 +44,9 @@ class AnimeServiceImplTest {
     }
 
     @Test
-    void getAllFavourite() {
-        Anime anime = new Anime(new Long(1),"Fate", new Long(12), null, null, null, null, null, 8.0, null, null, null);
-        animeService.saveToFavourite(anime);
-        AnimeOverview expected = anime.getOverview();
+    void getAllFavourite() throws IOException {
+        animeService.saveToFavourite(new Long(1));
+        AnimeOverview expected = animeService.getAnimeById(new Long(1)).getOverview();
         List<AnimeOverview> favourite = animeService.getAllFavourite(0);
         assert favourite.size() == 1;
         AnimeOverview actual = favourite.iterator().next();
@@ -51,9 +54,8 @@ class AnimeServiceImplTest {
     }
 
     @Test
-    void deleteFromWatchLater() {
-        Anime anime = new Anime(new Long(1),"Fate", new Long(12), null, null, null, null, null, 8.0, null, null, null);
-        animeService.saveToWatchLater(anime);
+    void deleteFromWatchLater() throws IOException {
+        animeService.saveToWatchLater(new Long(1));
         animeService.deleteFromWatchLater(new Long(1));
         assert animeRepo.count() == 0;
         Exception exception = assertThrows(IllegalStateException.class, () -> {
