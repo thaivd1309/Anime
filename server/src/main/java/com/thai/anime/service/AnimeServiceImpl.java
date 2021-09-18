@@ -176,4 +176,14 @@ public class AnimeServiceImpl implements AnimeService {
         if (studio.isPresent())
             anime.getStudios().add(studio.get());
     }
+
+    @Override
+    public int countFavourite() {
+        return animeRepo.countBySaveTo("FAVOURITE");
+    }
+
+    @Override
+    public int countWatchLater() {
+        return animeRepo.countBySaveTo("WATCH LATER");
+    }
 }

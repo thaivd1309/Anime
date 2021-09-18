@@ -1,6 +1,7 @@
 package com.thai.anime.controller;
 
 import com.thai.anime.animeobj.WebUser;
+import com.thai.anime.service.WebUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -19,6 +19,8 @@ public interface AnimeRepo extends JpaRepository<Anime, Long> {
     @Query("SELECT a FROM Anime a WHERE a.saveTo = :type AND a.mal_id = :mal_id")
     Optional<Anime> findBySaveToAndMal_id(@Param("type") String type, @Param("mal_id") Long mal_id);
 
+    int countBySaveTo(String type);
+
 //    @Query("DELETE FROM Anime a WHERE a.saveTo = :type AND a.mal_id = :mal_id")
 //    void deleteBySaveToAndMal_id(@Param("type") String type, @Param("mal_id") Long mal_id);
 }

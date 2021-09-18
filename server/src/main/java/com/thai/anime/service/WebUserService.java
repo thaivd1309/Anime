@@ -1,4 +1,4 @@
-package com.thai.anime.controller;
+package com.thai.anime.service;
 
 import com.thai.anime.animeobj.WebUser;
 import com.thai.anime.repo.WebUserRepository;

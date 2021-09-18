@@ -15,20 +15,30 @@
 
         <div th:replace="fragments/searchForm :: searchForm"></div>
 
-        <div class="justify-content-between">
-            <div>
+        <div class="d-flex justify-content-around mt-3">
+            <div th:unless="${isInFavourite}" class="col-2">
                 <form th:action="@{/favourite(id=${anime.mal_id})}" method="post">
-                    <button type="submit" class="btn btn-primary">Save to Favourite</button>
+                    <button type="submit" class="btn btn-info btn-lg">Save to Favourite</button>
                 </form>
             </div>
-            <div>
-                <form th:action="@{/watchlater(id=${anime.mal_id})}" method="post" th:object="${anime}">
-                    <button type="submit" class="btn btn-primary">Save to Watch Later</button>
+            <div th:if="${isInFavourite}" class="col-2">
+                <form th:action="@{/favourite/delete(id=${anime.mal_id})}" method="post">
+                    <button type="submit" class="btn btn-danger btn-lg">Delete from Favourite</button>
+                </form>
+            </div>
+            <div th:if="${isInWatchLater}" class="col-2">
+                <form th:action="@{/watchlater/delete(id=${anime.mal_id})}" method="post">
+                    <button type="submit" class="btn btn-danger btn-lg">Delete from Watch Later</button>
+                </form>
+            </div>
+            <div th:unless="${isInWatchLater}" class="col-2">
+                <form th:action="@{/watchlater(id=${anime.mal_id})}" method="post">
+                    <button type="submit" class="btn btn-secondary btn-lg">Save to Watch Later</button>
                 </form>
             </div>
         </div>
 
-        <div th:replace="fragments/animeDetail :: deilailCard (${anime}, ${animeGenres}, ${animeStudios})"></div>
+        <div th:replace="fragments/animeDetail :: deilailCard (${anime})"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>

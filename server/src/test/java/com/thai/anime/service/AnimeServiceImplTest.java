@@ -1,5 +1,6 @@
 package com.thai.anime.service;
 
+import com.thai.anime.animeobj.Anime;
 import com.thai.anime.animeobj.AnimeOverview;
 import com.thai.anime.repo.AnimeRepo;
 import com.thai.anime.repo.GenreRepo;
@@ -46,11 +47,11 @@ class AnimeServiceImplTest {
     @Test
     void getAllFavourite() throws IOException {
         animeService.saveToFavourite(new Long(1));
-        AnimeOverview expected = animeService.getAnimeById(new Long(1)).getOverview();
+        Anime expected = animeService.getAnimeById(new Long(1));
         List<AnimeOverview> favourite = animeService.getAllFavourite(0);
         assert favourite.size() == 1;
         AnimeOverview actual = favourite.iterator().next();
-        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getMal_id(), actual.getId());
     }
 
     @Test

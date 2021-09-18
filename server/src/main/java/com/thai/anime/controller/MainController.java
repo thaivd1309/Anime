@@ -42,10 +42,6 @@ public class MainController {
         model.addAttribute("anime", anime);
         model.addAttribute("isInFavourite", animeService.isInFavourite(id));
         model.addAttribute("isInWatchLater", animeService.isInWatchLater(id));
-        String genres = anime.getGenres().stream().map(Genre::getName).collect(Collectors.joining(", "));
-        String studios = anime.getStudios().stream().map(Studios::getName).collect(Collectors.joining(", "));
-        model.addAttribute("animeGenres", genres);
-        model.addAttribute("animeStudios", studios);
         return "detail";
     }
 
@@ -73,10 +69,46 @@ public class MainController {
         return "redirect:/anime/" + id;
     }
 
-//    @GetMapping("/test")
-//    public String test(Model model) {
-//        Long id = new Long(5);
-//        model.addAttribute("id", id);
-//        return "home";
-//    }
+    @GetMapping("/favourite")
+    public String getFavourite(Model model, @RequestParam(defaultValue = "1") int page) {
+        List<AnimeOverview> animes = animeService.getAllFavourite(page-1);
+        model.addAttribute("animes", animes);
+        int pageNum = (int)Math.ceil((double) animeService.countFavourite() / 10);
+        model.addAttribute("pageNum", pageNum);
+        return "favourite";
+    }
+
+    @GetMapping("/watchlater")
+    public String getWatchLater(Model model, @RequestParam(defaultValue = "1") int page) {
+        List<AnimeOverview> animes = animeService.getAllWatchLater(page-1);
+        model.addAttribute("animes", animes);
+        int pageNum = (int)Math.ceil((double) animeService.countWatchLater() / 10);
+        model.addAttribute("pageNum", pageNum);
+        return "watchlater";
+    }
+
+    @PostMapping("/favourite/delete")
+    public String deleteFavourite(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+        System.out.println("DELETE CALLED.");
+        try {
+            animeService.deleteFromFavourite(id);
+            redirectAttributes.addFlashAttribute("success", "Anime deleted from Favourite.");
+        }
+        catch (IllegalStateException exception) {
+            redirectAttributes.addFlashAttribute("error", exception.getMessage());
+        }
+        return "redirect:/anime/" + id;
+    }
+
+    @PostMapping("/watchlater/delete")
+    public String deleteWatchLater(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+        try {
+            animeService.deleteFromWatchLater(id);
+            redirectAttributes.addFlashAttribute("success", "Anime deleted from WatchLater.");
+        }
+        catch (IllegalStateException exception) {
+            redirectAttributes.addFlashAttribute("error", exception.getMessage());
+        }
+        return "redirect:/anime/" + id;
+    }
 }

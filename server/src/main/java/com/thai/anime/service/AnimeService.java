@@ -31,4 +31,6 @@ public interface AnimeService {
     void addGenre(Anime anime, Long genre_id);
     void addStudio(Anime anime, Long studio_id);
     Anime refreshGenresAndStudios(Anime anime);
+    int countFavourite();
+    int countWatchLater();
 }

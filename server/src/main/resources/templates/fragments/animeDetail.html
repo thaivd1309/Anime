@@ -6,8 +6,8 @@
     <title>Anime Detail</title>
 </head>
 <body>
-    <div th:fragment="deilailCard (anime, animeGenres, animeStudios)">
-        <div class="card mb-3 mt-5">
+    <div th:fragment="deilailCard (anime)">
+        <div class="card bg-light mb-3 mt-5">
             <div class="row g-0">
                 <div class="col-md-4">
                     <img th:src="${anime.image_url_lg}" width="100%" class="img-fluid rounded-start" alt="Image">
@@ -17,12 +17,12 @@
                         <h3 class="card-title" th:text="${anime.title}"></h3>
                         <h5 class="card-subtitle" th:text="'Score: ' + ${anime.score}"></h5>
                         <br>
-                        <p class="card-text" th:text="'Genres: ' + ${animeGenres}"></p>
+                        <p class="card-text" th:text="'Genres: ' + ${anime.genresString}"></p>
                         <p class="card-text" th:text="'Premiered: ' + ${anime.premiered} ?: 'unknown'"></p>
                         <p class="card-text" th:text="'Episodes: ' + ${#strings.toString(anime.episodes)} ?: 'unknown'"></p>
                         <p class="card-text" th:text="'Status: ' + ${anime.status} ?: 'unknown'"></p>
                         <p class="card-text" th:text="'Rating: ' + ${anime.rating} ?: 'unknown'"></p>
-                        <p class="card-text" th:text="'Studios: ' + ${animeStudios}"></p>
+                        <p class="card-text" th:text="'Studios: ' + ${anime.studiosString}"></p>
                         <p class="card-text">Link: <a class="card-text" th:href="${anime.url}" th:text="${anime.url}"></a></p>
                         <b class="card-text">Synopsis: </b> <p class="card-text" th:text="${anime.synopsis} ?: 'unknown'"></p>
                     </div>

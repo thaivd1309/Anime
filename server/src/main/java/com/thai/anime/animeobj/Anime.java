@@ -3,6 +3,7 @@ package com.thai.anime.animeobj;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Entity
 @Table
@@ -35,6 +36,11 @@ public class Anime {
 
     @Column(length = 2000)
     private String synopsis;
+
+    @Transient
+    private String genresString;
+    @Transient
+    private String studiosString;
 
     public Anime(Long mal_id,
                   String title,
@@ -177,8 +183,27 @@ public class Anime {
         image_url_lg = new StringBuilder(image_url).insert(image_url.length() - 4, "l").toString();
         return image_url_lg;
     }
-
     public void setImage_url_lg(String image_url_lg) {
         this.image_url_lg = image_url_lg;
+    }
+
+    public String getGenresString() {
+        String string = genres.stream().map(Genre::getName).collect(Collectors.joining(", "));
+        setGenresString(string);
+        return string;
+    }
+
+    public void setGenresString(String genresString) {
+        this.genresString = genresString;
+    }
+
+    public String getStudiosString() {
+        String string = studios.stream().map(Studios::getName).collect(Collectors.joining(", "));
+        setStudiosString(string);
+        return string;
+    }
+
+    public void setStudiosString(String studiosString) {
+        this.studiosString = studiosString;
     }
 }
