@@ -75,6 +75,7 @@ public class MainController {
         model.addAttribute("animes", animes);
         int pageNum = (int)Math.ceil((double) animeService.countFavourite() / 10);
         model.addAttribute("pageNum", pageNum);
+        model.addAttribute("page", page);
         return "favourite";
     }
 
@@ -84,6 +85,7 @@ public class MainController {
         model.addAttribute("animes", animes);
         int pageNum = (int)Math.ceil((double) animeService.countWatchLater() / 10);
         model.addAttribute("pageNum", pageNum);
+        model.addAttribute("page", page);
         return "watchlater";
     }
 
