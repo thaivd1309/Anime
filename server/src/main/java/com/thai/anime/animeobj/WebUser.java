@@ -1,7 +1,5 @@
 package com.thai.anime.animeobj;
 
-import com.thai.anime.animeobj.Role;
-
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -25,11 +23,11 @@ public class WebUser {
     private String password;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id")
-    )
+//    @JoinTable(
+//            name = "user_role",
+//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id")
+//    )
     private Collection<Role> roles;
 
     public WebUser(String name, String email, String password, Collection<Role> roles) {
@@ -72,5 +70,13 @@ public class WebUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 }

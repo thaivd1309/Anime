@@ -1,5 +1,6 @@
 package com.thai.anime.controller;
 
+import com.thai.anime.animeobj.Role;
 import com.thai.anime.animeobj.WebUser;
 import com.thai.anime.service.WebUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,10 @@ public class WebUserController {
     public ResponseEntity<WebUser> registerNewUser(@RequestBody WebUser user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/register").toUriString());
         return ResponseEntity.created(uri).body(webUserService.saveUser(user));
+    }
+
+    @PostMapping("/role")
+    public void saveRole(@RequestBody Role role) {
+        webUserService.saveRole(role);
     }
 }
