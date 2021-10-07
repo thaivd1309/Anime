@@ -29,6 +29,7 @@ public class WebUserController {
     @PostMapping("/register")
     public ResponseEntity<WebUser> registerNewUser(@RequestBody WebUser user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/register").toUriString());
+        webUserService.addRoleToUser(user, "USER");
         return ResponseEntity.created(uri).body(webUserService.saveUser(user));
     }
 

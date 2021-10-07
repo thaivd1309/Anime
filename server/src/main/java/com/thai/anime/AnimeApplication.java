@@ -29,7 +29,7 @@ public class AnimeApplication {
 	public CommandLineRunner run(AnimeService animeService, WebUserService webUserService) throws Exception {
 		return (String[] args) -> {
 
-			webUserService.saveRole(new Role("USER"));
+//			webUserService.saveRole(new Role("USER"));
 
 			animeService.saveToFavourite(new Long(1));
 			animeService.saveToFavourite(new Long(10059));

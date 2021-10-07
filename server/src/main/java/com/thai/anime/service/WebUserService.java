@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,11 +22,13 @@ import java.util.Optional;
 public class WebUserService implements UserDetailsService {
     private final WebUserRepository repository;
     private final RoleRepo roleRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public WebUserService(WebUserRepository repository, RoleRepo roleRepo) {
+    public WebUserService(WebUserRepository repository, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.roleRepo = roleRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<WebUser> findAllUsers() {
@@ -38,6 +41,7 @@ public class WebUserService implements UserDetailsService {
 //        if (foundedUser != null) {
 //            throw new IllegalStateException("Username already existed!");
 //        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         repository.save(user);
         return user;
     }
