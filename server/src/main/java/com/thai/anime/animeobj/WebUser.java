@@ -1,6 +1,10 @@
 package com.thai.anime.animeobj;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -18,6 +22,7 @@ public class WebUser {
             generator = "user_sequence"
     )
     private Long id;
+
     private String name;
     private String email;
     private String password;
@@ -30,14 +35,14 @@ public class WebUser {
 //    )
     private Collection<Role> roles;
 
-    public WebUser(String name, String email, String password, Collection<Role> roles) {
+    public WebUser() {
+    }
+
+    public WebUser(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.roles = roles;
-    }
-
-    public WebUser() {
+        this.roles = new ArrayList<>();
     }
 
     public Long getId() {
@@ -74,6 +79,10 @@ public class WebUser {
 
     public Collection<Role> getRoles() {
         return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
     public void addRole(Role role) {

@@ -29,19 +29,19 @@ public class AnimeApplication {
 	public CommandLineRunner run(AnimeService animeService, WebUserService webUserService) throws Exception {
 		return (String[] args) -> {
 
-//			webUserService.saveRole(new Role("USER"));
+//			webUserService.saveRole(new Role("ROLE_USER"));
 
-			animeService.saveToFavourite(new Long(1));
-			animeService.saveToFavourite(new Long(10059));
-			animeService.saveToFavourite(new Long(10087));
-			animeService.saveToFavourite(new Long(33047));
-			animeService.saveToFavourite(new Long(366));
-			animeService.saveToFavourite(new Long(	38084));
-			animeService.saveToFavourite(new Long(28701));
-			animeService.saveToFavourite(new Long(	11741));
-			animeService.saveToFavourite(new Long(27525));
-			animeService.saveToFavourite(new Long(	22297));
-			animeService.saveToFavourite(new Long(	14829));
+//			animeService.saveToFavourite(new Long(1));
+//			animeService.saveToFavourite(new Long(10059));
+//			animeService.saveToFavourite(new Long(10087));
+//			animeService.saveToFavourite(new Long(33047));
+//			animeService.saveToFavourite(new Long(366));
+//			animeService.saveToFavourite(new Long(	38084));
+//			animeService.saveToFavourite(new Long(28701));
+//			animeService.saveToFavourite(new Long(	11741));
+//			animeService.saveToFavourite(new Long(27525));
+//			animeService.saveToFavourite(new Long(	22297));
+//			animeService.saveToFavourite(new Long(	14829));
 		};
 	}
 }

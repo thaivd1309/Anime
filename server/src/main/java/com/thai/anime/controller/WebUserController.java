@@ -5,6 +5,7 @@ import com.thai.anime.animeobj.WebUser;
 import com.thai.anime.service.WebUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,16 +22,21 @@ public class WebUserController {
         this.webUserService = webUserService;
     }
 
+//    @ModelAttribute(value = "webuser")
+//    public WebUser user(String name, String email, String password) {
+//        return new WebUser(name, email, password);
+//    }
+
     @GetMapping
     public ResponseEntity<List<WebUser>> getAllUsers() {
         return ResponseEntity.ok().body(webUserService.findAllUsers());
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<WebUser> registerNewUser(@RequestBody WebUser user) {
+    @PostMapping(value = "/register")
+    public ResponseEntity<WebUser> registerNewUser(@RequestBody WebUser webuser, BindingResult bindingResult) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/user/register").toUriString());
-        webUserService.addRoleToUser(user, "USER");
-        return ResponseEntity.created(uri).body(webUserService.saveUser(user));
+        webUserService.addRoleToUser(webuser, "ROLE_USER");
+        return ResponseEntity.created(uri).body(webUserService.saveUser(webuser));
     }
 
     @PostMapping("/role")

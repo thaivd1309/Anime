@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +43,7 @@ public class WebUserService implements UserDetailsService {
 //            throw new IllegalStateException("Username already existed!");
 //        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        addRoleToUser(user, "ROLE_USER");
         repository.save(user);
         return user;
     }
