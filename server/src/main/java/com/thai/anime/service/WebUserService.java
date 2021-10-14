@@ -2,6 +2,7 @@ package com.thai.anime.service;
 
 import com.thai.anime.animeobj.Role;
 import com.thai.anime.animeobj.WebUser;
+import com.thai.anime.animeobj.WebUserDetails;
 import com.thai.anime.repo.RoleRepo;
 import com.thai.anime.repo.WebUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,8 +76,8 @@ public class WebUserService implements UserDetailsService {
         if(webUser == null) {
             throw new UsernameNotFoundException("Email not registered.");
         }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        webUser.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
-        return new User(webUser.getEmail(), webUser.getPassword(), authorities);
+//        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//        webUser.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        return new WebUserDetails(webUser);
     }
 }

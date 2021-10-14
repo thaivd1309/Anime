@@ -9,7 +9,9 @@
     <div th:fragment="navbar">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <span class="navbar-brand h1">Hello, User!</span>
+                <span class="navbar-brand h1">
+                    <span>Hello, </span><span sec:authentication="principal.name"></span>
+                </span>
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link active h3" th:href="@{/}">Home</a>
