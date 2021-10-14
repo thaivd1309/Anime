@@ -6,18 +6,18 @@ import com.thai.anime.form.RegisterForm;
 import com.thai.anime.service.AnimeService;
 import com.thai.anime.service.WebUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 public class MainController {
@@ -121,7 +121,15 @@ public class MainController {
     }
 
     @GetMapping("/login")
-    public String loginPage(@ModelAttribute LoginForm loginForm) {
+    public String loginPage(@ModelAttribute LoginForm loginForm,
+                              Model model,
+                              @RequestParam(required = false) boolean error) {
+        if (isAuthenticated()) {
+            return "redirect:/";
+        }
+        if (error) {
+            model.addAttribute("errorMsg", "Login credentials are not correct.");
+        }
         return "login";
     }
 
@@ -148,5 +156,14 @@ public class MainController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/register";
         }
+    }
+
+    private boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || AnonymousAuthenticationToken.class.
+                isAssignableFrom(authentication.getClass())) {
+            return false;
+        }
+        return authentication.isAuthenticated();
     }
 }

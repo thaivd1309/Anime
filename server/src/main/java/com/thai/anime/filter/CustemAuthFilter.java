@@ -34,22 +34,22 @@ public class CustemAuthFilter extends UsernamePasswordAuthenticationFilter {
         return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
     }
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        User user = (User) authResult.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256("secret");
-        String access_token = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000*60*5))
-                .withIssuer(request.getRequestURL().toString())
-                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-                .sign(algorithm);
-        String refresh_token = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000*60*20))
-                .withIssuer(request.getRequestURL().toString())
-                .sign(algorithm);
-        response.setHeader("access_token", access_token);
-        response.setHeader("refresh_token", refresh_token);
-    }
+//    @Override
+//    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+//        User user = (User) authResult.getPrincipal();
+//        Algorithm algorithm = Algorithm.HMAC256("secret");
+//        String access_token = JWT.create()
+//                .withSubject(user.getUsername())
+//                .withExpiresAt(new Date(System.currentTimeMillis() + 1000*60*5))
+//                .withIssuer(request.getRequestURL().toString())
+//                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+//                .sign(algorithm);
+//        String refresh_token = JWT.create()
+//                .withSubject(user.getUsername())
+//                .withExpiresAt(new Date(System.currentTimeMillis() + 1000*60*20))
+//                .withIssuer(request.getRequestURL().toString())
+//                .sign(algorithm);
+//        response.setHeader("access_token", access_token);
+//        response.setHeader("refresh_token", refresh_token);
+//    }
 }
