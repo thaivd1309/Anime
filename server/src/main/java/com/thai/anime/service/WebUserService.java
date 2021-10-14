@@ -6,17 +6,12 @@ import com.thai.anime.animeobj.WebUserDetails;
 import com.thai.anime.repo.RoleRepo;
 import com.thai.anime.repo.WebUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,8 +71,6 @@ public class WebUserService implements UserDetailsService {
         if(webUser == null) {
             throw new UsernameNotFoundException("Email not registered.");
         }
-//        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//        webUser.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
         return new WebUserDetails(webUser);
     }
 }

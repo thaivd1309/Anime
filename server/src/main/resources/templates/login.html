@@ -22,6 +22,7 @@
 
     <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
     <div class="alert alert-danger" role="alert" th:text="${errorMsg}" th:if="${errorMsg}"></div>
+    <div class="alert alert-success" role="alert" th:if="${param.logout}">Logout successful</div>
 
     <form action="authenticate" th:object="${loginForm}" method="post">
         <div class="justify-content-center" style="width: 50%">

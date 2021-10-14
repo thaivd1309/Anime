@@ -46,17 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("email")
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/login?error=true")
-//                .successHandler((req, res, auth) -> {
-//                    for (GrantedAuthority authority : auth.getAuthorities()) {
-//                        System.out.println(authority.getAuthority());
-//                    }
-//                    System.out.println(auth.getName());
-//                    res.sendRedirect("/");
-//                })
-//                .failureHandler((req, res, err) -> {
-//                    System.out.println(err.getMessage());
-//                    res.sendRedirect("/login?error=true");
-//                })
+                .permitAll()
+                .and().logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout=true")
                 .permitAll();
 //        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        http.addFilter(authFilter);
